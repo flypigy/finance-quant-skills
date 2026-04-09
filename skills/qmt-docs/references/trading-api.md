@@ -244,15 +244,60 @@ positions = get_trade_detail_data('account_id', 'stock', 'position')
 # positions 是列表，每个持仓一个元素
 
 for pos in positions:
-    pos.m_strInstrumentID       # 证券代码
-    pos.m_strExchangeID         # 交易所代码（SH/SZ）
-    pos.m_nVolume               # 总持仓量
-    pos.m_nCanUseVolume         # 可用数量
-    pos.m_dOpenPrice            # 开仓价
-    pos.m_dLastPrice            # 最新价
-    pos.m_dProfit               # 持仓盈亏
-    pos.m_dProfitRatio          # 盈亏比率
-    pos.m_dMarketValue          # 市值
+    pos.m_strAccountID  # str 资金账号
+    pos.m_strExchangeID  # str 证券市场
+    pos.m_strExchangeName  # str 市场名称
+    pos.m_strProductID  # str 品种代码
+    pos.m_strProductName  # str 品种名称
+    pos.m_strInstrumentID  # str 证券代码
+    pos.m_strInstrumentName  # str 证券名称
+    pos.m_nHedgeFlag  # int EHedge_Flag_Type 类型，投保 ，股票不适用
+    pos.m_nDirection  # int EEntrustBS，买卖方向 对于股票该值始终是48
+    pos.m_strOpenDate  # str 开仓日期 股票此字段无效
+    pos.m_strTradeID  # str 成交号，最初开仓位的成交
+    pos.m_nVolume  # int 当前拥股/持仓量
+    pos.m_dOpenPrice  # float 持仓成本 ；持仓成本 = (总买入金额 - 总卖出金额) / 剩余数量
+    pos.m_strTradingDay  # str 在实盘运行中是当前交易日，在回测中是股票最后交易过的日期
+    pos.m_dMargin  # float 使用的保证金，历史的直接用ctp的，新的自己用成本价存量系数算，股票不适用
+    pos.m_dOpenCost  # float 开仓成本，等于成本价*第一次建仓的量，后续减持会影响，不算手续费，股票不适用
+    pos.m_dSettlementPrice  # float 最新结算价/当前价
+    pos.m_nCloseVolume  # int 平仓量（对于股票不适用）
+    pos.m_dCloseAmount  # float 平仓额（对于股票不适用）
+    pos.m_dFloatProfit  # float 浮动盈亏
+    pos.m_dCloseProfit  # float 平仓盈亏（对于股票不适用）
+    pos.m_dMarketValue  # float 市值/合约价值
+    pos.m_dPositionCost  # float 持仓成本（对于股票不适用）
+    pos.m_dPositionProfit  # float 持仓盈亏（对于股票不适用）
+    pos.m_dLastSettlementPrice  # float 最新结算价（对于股票不适用）
+    pos.m_dInstrumentValue  # float 合约价值（对于股票不适用）
+    pos.m_bIsToday	bool	是否今仓
+    pos.m_strStockHolder  # str 股东账号
+    pos.m_nFrozenVolume  # int 冻结数量
+    pos.m_nCanUseVolume  # int 可用数量
+    pos.m_nOnRoadVolume  # int 在途股份
+    pos.m_nYesterdayVolume  # int 昨夜拥股
+    pos.m_dLastPrice  # float 最新价/当前价
+    pos.m_dAvgOpenPrice  # float 开仓均价（对于股票不适用）
+    pos.m_dProfitRate  # float 盈亏比例
+    pos.m_eFutureTradeType  # int EFutureTradeType 类型，成交类型
+    pos.m_strExpireDate  # str 到期日（针对逆回购）
+    pos.m_strComTradeID  # str 组合成交号
+    pos.m_nLegId  # int 组合序号
+    pos.m_dTotalCost  # float 累计成本（自定义，股票信用用到）
+    pos.m_dSingleCost  # float 单股成本（自定义，股票信用用
+    pos.m_nCoveredVolume  # int 备兑数量，用于个股期权
+    pos.m_eSideFlag  # int 持仓类型 ，用于个股期权，标记 '0' - 权利，'1' - 义务，'2' - '备兑'
+    pos.m_dReferenceRate  # float 汇率，目前用于港股通
+    pos.m_dStructFundVol  # float 分级基金可用（可分拆或可合并）
+    pos.m_dRedemptionVolume  # float 分级基金可赎回量
+    pos.m_nPREnableVolume  # int 申赎可用量（记录当日申购赎回的股票或基金数量）
+    pos.m_dRealUsedMargin  # float 实时占用保证金，用于期权
+    pos.m_dRoyalty  # float 权利金
+    pos.m_dStockLastPrice  # float 标的证券最新价，用于期权
+    pos.m_dStaticHoldMargin  # float 静态持仓占用保证金，用于期权
+    pos.m_nOptCombUsedVolume  # int 期权组合占用数量
+    pos.m_nEnableExerciseVolume  # int 能够行使的数量，用于个股期权
+    pos.m_strAccountKey  # str 账号key，唯一区别不同账号的key
 ```
 
 #### 委托信息 ('order')
@@ -261,30 +306,95 @@ for pos in positions:
 orders = get_trade_detail_data('account_id', 'stock', 'order')
 
 for order in orders:
-    order.m_strOrderID          # 委托编号
-    order.m_nOrderStatus        # 委托状态（0-7）
-    order.m_nOrderVolume        # 委托数量
-    order.m_nTradedVolume       # 已成交量
-    order.m_dOrderPrice         # 委托价格
-    order.m_strInstrumentID     # 证券代码
-    order.m_dOrderInsertTime    # 下单时间
+    order.m_strAccountID  # str 资金账号，账号，账号，资金账号
+    order.m_strExchangeID  # str 证券市场
+    order.m_strExchangeName  # str 交易市场
+    order.m_strProductID  # str 品种代码
+    order.m_strProductName  # str 品种名称
+    order.m_strInstrumentID  # str 证券代码
+    order.m_strInstrumentName  # str 证券名称，合约名称
+    order.m_nRef  # int 订单编号
+    order.m_strOrderRef  # str 内部委托号，下单引用等于股票的内部委托号
+    order.m_nOrderPriceType  # int EBrokerPriceType 类型，例如市价单、限价单
+    order.m_nDirection  # int EEntrustBS 类型，操作，多空，期货多空，股票买卖永远是 48，其他的 dir 同理
+    order.m_nOffsetFlag  # int EOffset_Flag_Type类型，买卖/开平，用此字段区分股票买卖，期货开、平仓，期权买卖等
+    order.m_nHedgeFlag  # int EHedge_Flag_Type 类型，投保
+    order.m_dLimitPrice  # float 委托价格，限价单的限价，即报价
+    order.m_nVolumeTotalOriginal  # int 委托数量，最初的委托数量
+    order.m_nOrderSubmitStatus  # int EEntrustSubmitStatus 类型，报单状态，提交状态，股票中不需要报单状态
+    order.m_strOrderSysID  # str 合同编号，委托号
+    order.m_nOrderStatus  # int EEntrustStatus，委托状态
+    order.m_nVolumeTraded  # int 成交数量，已成交量
+    order.m_nVolumeTotal  # int 委托剩余量，当前总委托量，股票中表示总委托量减去成交量
+    order.m_nErrorID  # int 状态ID
+    order.m_strErrorMsg  # str 状态信息
+    order.m_nTaskId  # int 任务号
+    order.m_dFrozenMargin  # float 冻结金额，冻结保证金
+    order.m_dFrozenCommission  # float 冻结手续费
+    order.m_strInsertDate  # str 委托日期，报单日期
+    order.m_strInsertTime  # str 委托时间
+    order.m_dTradedPrice  # float 成交均价（股票）
+    order.m_dCancelAmount  # float 已撤数量
+    order.m_strOptName  # str 买卖标记，展示委托属性的中文
+    order.m_dTradeAmount  # float 成交金额，期货的计算方式为均价乘以数量乘以合约乘数
+    order.m_eEntrustType  # int EEntrustTypes，委托类别
+    order.m_strCancelInfo  # str 废单原因
+    order.m_strUnderCode  # str 标的证券代码
+    order.m_eCoveredFlag  # int 备兑标记，'0’表示非备兑，'1’表示备兑
+    order.m_dOrderPriceRMB  # float 委托价格（人民币），目前用于港股通
+    order.m_dTradeAmountRMB  # float 成交金额（人民币），目前用于港股通
+    order.m_dReferenceRate  # float 汇率，目前用于港股通
+    order.m_strCompactNo  # str 合约编号
+    order.m_eCashgroupProp  # int EXTCompactBrushSource类型，头寸来源
+    order.m_dShortOccupedMargin  # float 预估在途占用保证金，用于期权
+    order.m_strXTTrade  # str 是否是迅投交易
+    order.m_strAccountKey  # str 账号key，唯一区别不同账号的key
+    order.m_strRemark  # str 投资备注
 ```
 
 #### 成交信息 ('deal')
 
 ```python
-deals = get_trade_detail_data('account_id', 'stock', 'deal')
+deals = get_trade_detail_data('account_id', 'stock', 'deal', 'strategyName')
 
 for deal in deals:
-    deal.m_strTradeTime         # 成交时间
-    deal.m_strInstrumentID      # 证券代码
-    deal.m_strExchangeID        # 交易所代码（SH/SZ）
-    deal.m_nTradeDir            # 成交方向（0=买 1=卖）
-    deal.m_dTradePrice          # 成交价格
-    deal.m_nTradeVolume         # 成交数量
-    deal.m_dCommission          # 手续费
-    deal.m_dProfit              # 持仓盈亏
-    deal.m_strRemark            # 备注
+    print(deal.m_strTradeID, '# str 成交编号', '-' * 80)
+    print(deal.m_strAccountID, '# str 资金账号')
+    print(deal.m_strInstrumentID, '# str 证券代码')
+    print(deal.m_strInstrumentName, '# str 证券名称')
+    print(deal.m_strExchangeID, '# str 证券市场（SH/SZ）')
+    print(deal.m_strExchangeName, '# str 交易市场名称')
+    print(deal.m_strProductID, '# str 品种代码')
+    print(deal.m_strProductName, '# str 品种名称')
+    print(deal.m_strOrderRef, '# str 下单引用，等于股票的内部委托号')
+    print(deal.m_strOrderSysID, '# str 合同编号，报单编号，委托号')
+    print(deal.m_nDirection, '# int EEntrustBS，买卖方向 对于股票该值始终是48')
+    print(deal.m_nOffsetFlag, '# int EOffset_Flag_Type，买卖/开平，用此字段区分股票买卖，期货开、平仓，期权买卖等')
+    print(deal.m_nHedgeFlag, '# int EHedge_Flag_Type 类型，投保')
+    print(deal.m_dPrice, '# float 成交均价')
+    print(deal.m_nVolume, '# int 成交量，期货单位手，股票做到股')
+    print(deal.m_strTradeDate, '# str 成交日期')
+    print(deal.m_strTradeTime, '# str 成交时间')
+    print(deal.m_dCommission, '# float 手续费 (旧版本为 m_dComission)')
+    print(deal.m_dTradeAmount, '# float 成交额，期货 = 均价 * 量 * 合约乘数')
+    print(deal.m_nTaskId, '# int 任务号')
+    print(deal.m_nOrderPriceType, '# int EBrokerPriceType 类型，例如市价单、限价单')
+    print(deal.m_strOptName, '# str 买卖标记，展示委托属性的中文')
+    print(deal.m_eEntrustType, '# int EEntrustTypes，委托类别')
+    print(deal.m_eFutureTradeType, '# int EFutureTradeType 类型，成交类型')
+    print(deal.m_nRealOffsetFlag, '# int EOffset_Flag_Type 类型，实际开平，主要是区分平今和平昨')
+    print(deal.m_eCoveredFlag, "# int ECoveredFlag类型，备兑标记 '0' - 非备兑，'1' - 备兑")
+    print(deal.m_nCloseTodayVolume, '# int 平今量，不显示')
+    print(deal.m_dOrderPriceRMB, '# float 委托价格（人民币），目前用于港股通')
+    print(deal.m_dPriceRMB, '# float 成交价格（人民币），目前用于港股通')
+    print(deal.m_dTradeAmountRMB, '# float 成交金额（人民币），目前用于港股通')
+    print(deal.m_dReferenceRate, '# float 汇率，目前用于港股通')
+    print(deal.m_strXTTrade, '# str 是否是迅投交易')
+    print(deal.m_strCompactNo, '# str 合约编号')
+    print(deal.m_dCloseProfit, '# float 平仓盈亏，目前用于外盘')
+    print(deal.m_strRemark, '# str 投资备注')
+    print(deal.m_strAccountKey, '# str 账号key，唯一区别不同账号的key')
+    print(deal.m_nRef, '# int 订单编号')
 ```
 
 ### 常用查询模式
@@ -322,8 +432,7 @@ def get_holdings(account_id, account_type='stock'):
             'total': pos.m_nVolume,
             'can_use': pos.m_nCanUseVolume,
             'price': pos.m_dLastPrice,
-            'profit': pos.m_dProfit,
-            'profit_ratio': pos.m_dProfitRatio
+            'ProfitRate': pos.m_dProfitRate
         }
     
     return holdings_dict
@@ -352,9 +461,9 @@ def get_last_deals(account_id, count=10):
         时间: {deal.m_strTradeTime}
         品种: {stock}
         方向: {direction}
-        价格: {deal.m_dTradePrice}
-        数量: {deal.m_nTradeVolume}
-        成交额: {deal.m_dTradePrice * deal.m_nTradeVolume:.2f}
+        价格: {deal.m_dTradedPrice}
+        数量: {deal.m_nVolume}
+        成交额: {deal.m_dTradedPrice * deal.m_nVolume:.2f}
         手续费: {deal.m_dCommission:.2f}
         """)
     
