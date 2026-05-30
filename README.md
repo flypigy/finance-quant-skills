@@ -2,7 +2,7 @@
 
 一个面向金融量化交易领域的 Claude Skills 技能维护仓库，基于 [Agent Skills](https://agentskills.io) 标准构建。
 
-## 目录结构
+## 一、目录结构
 
 本仓库维护金融量化交易相关的 Skills，涵盖量化策略开发、金融数据分析、交易框架文档查询等场景。每个 Skill 位于独立文件夹中，包含 `SKILL.md` 指令等文件。
 
@@ -24,11 +24,11 @@ finance-quant-skills/
 └── .claude-plugin/      # Claude Code 插件配置
 ```
 
-## Skills 安装
+## 二、Skills 安装
 
 请根据你的使用场景选择合适的安装方式：
 
-### 方式一：让 AI Agent 帮助安装
+### 2.1 方式一：让 AI Agent 帮助安装
 
 以对话的形式告诉 Agent 智能体，如 `OpenClaw`：
 
@@ -36,7 +36,7 @@ finance-quant-skills/
 >
 > 帮我安装这个 skills 仓库中的 qmt-docs 技能: https://github.com/lzwme/finance-quant-skills
 
-### 方式二：在 Claude Code 中安装使用
+### 2.2 方式二：在 Claude Code 中安装使用
 
 将该仓库注册为 Claude Code Plugin marketplace：
 
@@ -55,7 +55,7 @@ finance-quant-skills/
 
 安装后，直接描述需求即可触发对应 Skill，例如："使用 QMT 文档 Skill 查询如何通过 Python 调用交易接口"。
 
-### 方式三（推荐）：使用 `npx skills` 工具为智能体安装技能
+### 2.3 方式三（推荐）：使用 `npx skills` 工具为智能体安装技能
 
 ```bash
 # 查看帮助
@@ -72,11 +72,13 @@ npx skills update
 npx skills add lzwme/finance-quant-skills
 ```
 
-### 安装技巧：以软连接形式安装支持多编程智能体工具
+### 2.4 安装技巧：以软连接形式支持多编程智能体工具
 
-不同编程智能体的 skills 目录规范有所不同。当我们会在多个编程工具之间切换使用时，则需要配置多个 skills 目录。
+不同编程智能体的 skills 目录规范有所不同。当我们在多个编程工具之间切换使用时，需要配置多个 skills 目录。
 
-通过软连接和 `.gitignore` 配置，可以将 skills 目录链接到多个编程工具的 skills 目录中：
+通过软连接和 `.gitignore` 配置，可以将 skills 目录链接到多个编程工具的 skills 目录中，如此则仅在源目录维护更新文件即可。
+
+创建软连接的命令示例如下：
 
 ```bash
 # 假若在 agents/skills 中维护 skills
@@ -91,15 +93,25 @@ New-Item -ItemType Junction -Path .cluade/skills -Target <绝对路径>/agents/s
 New-Item -ItemType Junction -Path .cursor/skills -Target <绝对路径>/agents/skills
 ```
 
-## Skills 使用示例
+`.gitignore` 配置示例如下：
+
+```
+# 假若仅在 .agents/skills 中维护 skills
+# 忽略 .cluade、.cursor 等目录下的 skills 软连接
+.cluade/skills
+.cursor/skills
+.codebuddy/skills
+```
+
+## 三、Skills 使用示例
 
 本项目共包含 **11 个 Skills**，按功能分为三大类：**数据获取**、**回测框架**、**策略开发与文档**。安装后，直接向 AI 助手描述需求即可自动触发对应 Skill。
 
-### 📊 数据获取
+### 📈 3.1 数据获取
 
 #### 1. 获取 A 股历史 K 线（BaoStock — 免费、无需注册）
 
-> 帮我用 baostock 获取贵州茅台 2024 年全年的日 K 线数据，前复权
+> 帮我用 baostock 获取贵州茅台 2025 年全年的日 K 线数据，前复权
 
 - **适用场景**：A 股历史行情、财务报表、指数成分股、交易日历
 - **关键参数**：代码格式 `sh.600519` / `sz.000001`，支持 `--adjust 2`（前复权）
@@ -107,11 +119,11 @@ New-Item -ItemType Junction -Path .cursor/skills -Target <绝对路径>/agents/s
 #### 2. 获取全品类金融数据（AKShare — 免费、无需注册）
 
 > 帮我用 akshare 查看沪深 300 ETF（510300）的实时行情
-> 帮我用 akshare 获取中国 2024 年 GDP 宏观数据
+> 帮我用 akshare 获取中国 2025 年 GDP 宏观数据
 > 帮我用 akshare 查询 BTC/USDT 的加密货币价格
 
 - **适用场景**：股票/期货/期权/基金/外汇/债券/加密货币/宏观经济
-- **关键参数**：`python scripts/stock_data.py --type hist --symbol 600519 --start 20240101`
+- **关键参数**：`python scripts/stock_data.py --type hist --symbol 600519 --start 20250101`
 
 #### 3. 自然语言选股查询（PyWenCai — 同花顺问财）
 
@@ -140,7 +152,7 @@ New-Item -ItemType Junction -Path .cursor/skills -Target <绝对路径>/agents/s
 
 #### 6. 聚宽数据（JQData — 需 Token）
 
-> 帮我用聚宽获取招商银行 2024 年的财务指标和估值因子
+> 帮我用聚宽获取招商银行 2025 年的财务指标和估值因子
 
 - **适用场景**：A 股行情、财务指标、因子数据（估值/动量/质量等）
 - **前置要求**：需注册聚宽账号并配置 Token（环境变量 `JQDATA_TOKEN`）
@@ -148,7 +160,7 @@ New-Item -ItemType Junction -Path .cursor/skills -Target <绝对路径>/agents/s
 
 #### 7. Tushare 数据（需 Token）
 
-> 帮我用 tushare 获取上证指数 2024 上半年的日线数据和宏观数据
+> 帮我用 tushare 获取上证指数 2025 上半年的日线数据和宏观数据
 
 - **适用场景**：A 股行情、财务报表（利润表/资产负债表/现金流）、指数、Shibor 等宏观数据
 - **前置要求**：需注册 Tushare Pro 并配置 Token（环境变量 `TUSHARE_TOKEN`）
@@ -156,11 +168,11 @@ New-Item -ItemType Junction -Path .cursor/skills -Target <绝对路径>/agents/s
 
 ---
 
-### 🔬 策略回测框架
+### 🔬 3.2 策略回测框架
 
 #### 8. Backtrader 回测（开源、纯 Python）
 
-> 帮我用 backtrader 写一个双均线交叉策略，回测贵州茅台 2024 年数据，计算夏普比率和最大回撤
+> 帮我用 backtrader 写一个双均线交叉策略，回测贵州茅台 2025 年数据，计算夏普比率和最大回撤
 
 - **适用场景**：事件驱动回测、内置 100+ 技术指标、参数优化（网格搜索）、绩效分析
 - **核心概念**：Cerebro（引擎）、Strategy（策略）、Analyzer（分析器）、指标在 `__init__` 中定义，交易逻辑在 `next` 中编写
@@ -176,7 +188,7 @@ New-Item -ItemType Junction -Path .cursor/skills -Target <绝对路径>/agents/s
 
 ---
 
-### 🛠 策略开发与文档
+### 🛠 3.3 策略开发与文档
 
 #### 10. AKQuant 策略开发框架
 
@@ -197,7 +209,7 @@ New-Item -ItemType Junction -Path .cursor/skills -Target <绝对路径>/agents/s
 
 ---
 
-### 💡 典型组合使用场景
+### 💡 3.4 典型组合使用场景
 
 | 场景 | 推荐 Skills 搭配 |
 |------|----------------|
@@ -208,9 +220,9 @@ New-Item -ItemType Junction -Path .cursor/skills -Target <绝对路径>/agents/s
 | **全品类数据采集** | akshare（股票/期货/加密货币/宏观） |
 
 
-## 开发
+## 四、开发
 
-### 什么是 Skills？
+### 4.1 什么是 Skills？
 
 Skills 是由指令、脚本和资源组成的文件夹，Claude 会动态加载它们以提升在专业任务上的表现。Skills 教会 Claude 如何以可重复的方式完成特定任务——例如按照量化策略流程编写交易程序、分析金融数据、自动化研报处理等。
 
@@ -219,7 +231,7 @@ Skills 是由指令、脚本和资源组成的文件夹，Claude 会动态加载
 - [如何创建自定义 Skills](https://support.claude.com/en/articles/12512198-creating-custom-skills)
 - [Equipping agents for the real world with Agent Skills](https://anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills)
 
-### 创建新的 Skill
+### 4.2 创建新的 Skill
 
 在 `skills/` 目录下新建文件夹，创建 `SKILL.md` 及相关文档或资源文件即可。模板示例：
 
@@ -246,9 +258,9 @@ Frontmatter 必填字段：
 - `name` — 唯一标识符（小写，用连字符分隔）
 - `description` — 功能描述，说明该 Skill 做什么以及何时使用
 
-## 量化金融相关资源参考
+## 五、量化金融相关资源参考
 
-### 金融相关 Skills
+### 5.1 量化金融相关 Skills
 
 - 东方财富妙想：
     - https://ai.eastmoney.com/mxClaw
@@ -265,7 +277,7 @@ Frontmatter 必填字段：
 - [https://skills.sh](https://skills.sh) Vercel 推出的 Skills 聚合站，包含大量开源 Skills，能够按 24 小时热度、官方认证等多种方式快速检索。
 - [http://clawhub.ai](http://clawhub.ai) OpenClaw 官方 Skills 集合站。
 
-### 量化交易资源列表
+### 5.2 量化交易资源列表
 
 - [Awesome Quant](AWESOME-QUANT.md) 收集整理学习和使用涉及的高质量量化交易资源列表，以便于快速索引查找。
 
