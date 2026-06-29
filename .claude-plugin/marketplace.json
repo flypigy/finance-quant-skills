@@ -11,15 +11,16 @@
   "plugins": [
     {
       "name": "quant-skills",
-      "description": "金融量化框架",
+      "description": "金融量化框架与投研",
       "source": "./",
       "strict": false,
       "skills": [
         "./skills/akquant",
         "./skills/backtrader",
-        "./skills/rqalpha",
+        "./skills/equity-researcher",
         "./skills/joinquant-docs",
-        "./skills/qmt-docs"
+        "./skills/qmt-docs",
+        "./skills/rqalpha"
       ]
     },
     {
